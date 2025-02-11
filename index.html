@@ -5,12 +5,285 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cartas del Destino</title>
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        /* General */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            animation: changeBackground 10s infinite alternate;
+        }
+
+        /* Animación para el título */
+        .title {
+            font-size: 2.5rem;
+            color: #e91e63;
+            margin-bottom: 20px;
+            font-weight: bold;
+            animation: titleAnimation 3s infinite alternate;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #ff4081;
+            margin-bottom: 20px;
+        }
+
+        /* Animación constante para el título */
+        @keyframes titleAnimation {
+            0% {
+                transform: translateX(0);
+                color: #e91e63;
+            }
+
+            50% {
+                transform: translateX(20px);
+                color: #ff66b2;
+            }
+
+            100% {
+                transform: translateX(-20px);
+                color: #ffffff;
+            }
+        }
+
+        /* Fondo con cambio de color */
+        @keyframes changeBackground {
+            0% {
+                background-color: #f7e9e9;
+            }
+
+            25% {
+                background-color: #ffb3b3;
+            }
+
+            50% {
+                background-color: #ff99cc;
+            }
+
+            75% {
+                background-color: #f28ab2;
+            }
+
+            100% {
+                background-color: #ff66b2;
+            }
+        }
+
+        /* Estilo de las cartas */
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .card {
+            width: 100%;
+            height: 150px;
+            background-color: #3c3c3c;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            transform: rotateY(0deg);
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card .front,
+        .card .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+        }
+
+        .card .front {
+            background: linear-gradient(45deg, #ff758c, #ff7eb3);
+            font-size: 3rem;
+            color: white;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .card .back {
+            background: linear-gradient(45deg, #ffffff, #fff0f5);
+            font-family: 'Pacifico', cursive;
+            font-size: 1.2rem;
+            color: #c2185b;
+            padding: 15px;
+            text-align: center;
+            transform: rotateY(180deg);
+            border: 2px solid #ff4081;
+            line-height: 1.4;
+        }
+
+        /* Animación de voltear */
+        @keyframes flipEffect {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(180deg);
+            }
+        }
+
+        .card.flip {
+            animation: flipEffect 0.6s forwards;
+        }
+
+        /* Lluvia de corazones */
+        .heart-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: fall 3s infinite;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 15px;
+            text-align: center;
+            animation: modalAppear 0.5s ease;
+        }
+
+        @keyframes modalAppear {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Floating hearts animation */
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Media queries para móviles */
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .card {
+                height: 120px;
+            }
+
+            .card .front {
+                font-size: 2.5rem;
+            }
+
+            .card .back {
+                font-size: 1rem;
+                padding: 10px;
+            }
+
+            .modal-content h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
-        <h1 class="title">¡Las Cartas del Destino!</h1>
+        <h1 class="title">¡Las Cartas del Destino, Michelle! 💖</h1>
+        <p class="subtitle">Cada carta guarda un mensaje especial para ti</p>
         <div class="cards">
             <div class="card" id="card1">
                 <div class="front">🎴</div>
@@ -37,7 +310,90 @@
 
     <div class="heart-rain"></div>
 
-    <script src="script.js"></script>
+    <div id="valentin-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>¡Michelle, quieres ser mi San Valentín? 💌</h2>
+            <div class="hearts-container"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card');
+            const heartEmojis = ['💖', '❤️', '💝', '💘', '💕', '💞'];
+
+            // Mensajes para las cartas
+            const messages = [
+                "Eres la razón de mi felicidad 💖",
+                "Cada día contigo es un regalo 🎁",
+                "Tu sonrisa ilumina mi vida ✨",
+                "El amor que siento por ti es infinito 💫",
+                "Y finalmente... ¿Quieres ser mi San Valentín? 💌"
+            ];
+
+            // Asignar eventos a cada carta
+            cards.forEach((card, index) => {
+                card.addEventListener('click', () => {
+                    if (card.classList.contains('flip')) return;
+
+                    const back = card.querySelector('.back');
+                    back.textContent = messages[index];
+                    card.classList.add('flip');
+
+                    // Check if all cards are flipped
+                    const allFlipped = [...cards].every(card => card.classList.contains('flip'));
+
+                    if (index === messages.length - 1) {
+                        setTimeout(() => {
+                            document.getElementById('valentin-modal').style.display = 'block';
+                            createHeartsInModal();
+                        }, 1000);
+                    }
+
+                    if (allFlipped) {
+                        document.body.classList.add('all-flipped');
+                    }
+                });
+            });
+
+            // Crear la lluvia de corazones
+            function createHeart() {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.fontSize = `${Math.random() * 20 + 20}px`;
+                heart.style.left = `${Math.random() * 100}vw`;
+                heart.style.animationDuration = `${Math.random() * 2 + 2}s`;
+                document.querySelector('.heart-rain').appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 4000);
+            }
+
+            setInterval(createHeart, 300);
+
+            // Funciones para el modal
+            function createHeartsInModal() {
+                const container = document.querySelector('.hearts-container');
+                for (let i = 0; i < 50; i++) {
+                    const heart = document.createElement('div');
+                    heart.style.position = 'absolute';
+                    heart.style.left = `${Math.random() * 100}%`;
+                    heart.style.top = `${Math.random() * 100}%`;
+                    heart.textContent = '💖';
+                    heart.style.animation = `float ${Math.random() * 3 + 2}s infinite`;
+                    container.appendChild(heart);
+                }
+            }
+
+            document.querySelector('.close').addEventListener('click', () => {
+                document.getElementById('valentin-modal').style.display = 'none';
+                window.open("https://www.youtube.com/watch?v=oWBYhV0X_vI&t=10s", "_blank");
+            });
+        });
+    </script>
 </body>
 
 </html>
