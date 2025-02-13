@@ -277,6 +277,100 @@
                 font-size: 1.5rem;
             }
         }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        button {
+            background: #ff69b4;
+            border: none;
+            padding: 10px 20px;
+            font-size: 20px;
+            color: white;
+            font-family: 'Dancing Script', cursive;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background: #ff1493;
+            transform: scale(1.1);
+        }
+
+        .download-btn {
+            display: inline-block;
+            margin-top: 15px;
+            background: #ffcccb;
+            padding: 12px 18px;
+            color: #333;
+            font-size: 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s ease-in-out;
+        }
+
+        .download-btn:hover {
+            background: #ff9999;
+            transform: scale(1.1);
+        }
+
+        .container-modal {
+            background: rgba(255, 255, 255, 0.315);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            color: #000;
+            font-size: 36px;
+        }
+
+        p {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 26px;
+            color: #000;
+        }
     </style>
 </head>
 
@@ -310,18 +404,35 @@
 
     <div class="heart-rain"></div>
 
-    <div id="valentin-modal" class="modal">
+    <!--<div id="valentin-modal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close">×</span>
             <h2>¡Michelle, quieres ser mi San Valentín? 💌</h2>
             <div class="hearts-container"></div>
+        </div>
+    </div>-->
+
+    <div id="valentin-modal" class="modal">
+        <div class="modal-content">
+
+            <h2>¿Quieres ser mi San Valentín?</h2>
+            <div class="buttons">
+                <button id="botonSi">Sí 💖</button>
+                <button id="botonNo">No 💔</button>
+            </div>
+            <a id="descargar" href="carta.pdf" download class="download-btn" onclick="abrir()">Descargar Carta
+                📩</a>
         </div>
     </div>
 
     <script>
+        function abrir() {
+            window.open('https://www.youtube.com/watch?v=oWBYhV0X_vI&t=10s', '_blank')
+        }
         document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.card');
             const heartEmojis = ['💖', '❤️', '💝', '💘', '💕', '💞'];
+            let flippedCardsCount = 0; // Counter for flipped cards
 
             // Mensajes para las cartas
             const messages = [
@@ -340,19 +451,12 @@
                     const back = card.querySelector('.back');
                     back.textContent = messages[index];
                     card.classList.add('flip');
+                    flippedCardsCount++; // Increment the counter
 
-                    // Check if all cards are flipped
-                    const allFlipped = [...cards].every(card => card.classList.contains('flip'));
 
-                    if (index === messages.length - 1) {
-                        setTimeout(() => {
-                            document.getElementById('valentin-modal').style.display = 'block';
-                            createHeartsInModal();
-                        }, 1000);
-                    }
+                    if (flippedCardsCount === cards.length) {
+                        document.getElementById('valentin-modal').style.display = 'block';
 
-                    if (allFlipped) {
-                        document.body.classList.add('all-flipped');
                     }
                 });
             });
@@ -374,23 +478,39 @@
 
             setInterval(createHeart, 300);
 
-            // Funciones para el modal
-            function createHeartsInModal() {
-                const container = document.querySelector('.hearts-container');
-                for (let i = 0; i < 50; i++) {
-                    const heart = document.createElement('div');
-                    heart.style.position = 'absolute';
-                    heart.style.left = `${Math.random() * 100}%`;
-                    heart.style.top = `${Math.random() * 100}%`;
-                    heart.textContent = '💖';
-                    heart.style.animation = `float ${Math.random() * 3 + 2}s infinite`;
-                    container.appendChild(heart);
-                }
-            }
 
-            document.querySelector('.close').addEventListener('click', () => {
-                document.getElementById('valentin-modal').style.display = 'none';
-                window.open("https://www.youtube.com/watch?v=oWBYhV0X_vI&t=10s", "_blank");
+
+            // Para la ventana Modal
+            const botonNo = document.getElementById("botonNo");
+            const botonSi = document.getElementById("botonSi");
+            const descargar = document.getElementById("descargar");
+
+            descargar.style.display = "none";
+
+            setInterval(createHeart, 100);
+
+            botonNo.addEventListener("mouseover", function () {
+                const maxX = window.innerWidth - botonNo.offsetWidth - 20;
+                const maxY = window.innerHeight - botonNo.offsetHeight - 20;
+
+                let x, y;
+
+                do {
+                    x = Math.random() * maxX;
+                    y = Math.random() * maxY;
+                } while (
+                    Math.abs(x - botonSi.offsetLeft) < 100 &&
+                    Math.abs(y - botonSi.offsetTop) < 50
+                );
+
+                botonNo.style.position = "absolute";
+                botonNo.style.left = `${x}px`;
+                botonNo.style.top = `${y}px`;
+            });
+
+            botonSi.addEventListener("click", function () {
+                descargar.style.display = "block";
+                descargar.style.animation = "fadeIn 1s ease-in-out";
             });
         });
     </script>
