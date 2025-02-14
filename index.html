@@ -17,6 +17,7 @@
             overflow: hidden;
             min-height: 100vh;
             animation: changeBackground 10s infinite alternate;
+            overflow-y: auto;
         }
 
         /* Animación para el título */
@@ -121,6 +122,7 @@
             justify-content: center;
             align-items: center;
             border-radius: 15px;
+            overflow: hidden;
         }
 
         .card .front {
@@ -140,6 +142,14 @@
             transform: rotateY(180deg);
             border: 2px solid #ff4081;
             line-height: 1.4;
+        }
+
+        .card .back img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+            object-fit: cover;
+            /* Ajusta la imagen sin deformarla */
         }
 
         /* Animación de voltear */
@@ -377,29 +387,41 @@
 <body>
     <div class="container">
         <h1 class="title">¡Michelle! 💖</h1>
-        <p class="subtitle">Cada carta guarda un mensaje especial pa ti</p>
-        <div class="cards">
-            <div class="card" id="card1">
-                <div class="front">🎴</div>
-                <div class="back"></div>
-            </div>
-            <div class="card" id="card2">
-                <div class="front">🎴</div>
-                <div class="back"></div>
-            </div>
-            <div class="card" id="card3">
-                <div class="front">🎴</div>
-                <div class="back"></div>
-            </div>
-            <div class="card" id="card4">
-                <div class="front">🎴</div>
-                <div class="back"></div>
-            </div>
-            <div class="card" id="card5">
-                <div class="front">🎴</div>
-                <div class="back"></div>
-            </div>
-        </div>
+        <p class="subtitle">Gracias por estar aquí, trasciendes más allá del ser, tqm michelle</p>
+        <p class="subtitle">Cada carta es pa ti <3 </p>
+                <div class="cards">
+                    <div class="card" id="card1">
+                        <div class="front">
+                            <img src="assets/image1.webp" alt="Frente al espejo" height="100%">
+                        </div>
+                        <div class="back"></div>
+                    </div>
+                    <div class="card" id="card2">
+                        <div class="front">
+                            <img src="assets/image2.webp" alt="Tapando su rostro postrando su trasero en el suelo"
+                                height="100%">
+                        </div>
+                        <div class="back"></div>
+                    </div>
+                    <div class="card" id="card3">
+                        <div class="front">
+                            <img src="assets/image3.webp" alt="Con su playerita de Jurassic Park" height="100%">
+                        </div>
+                        <div class="back"></div>
+                    </div>
+                    <div class="card" id="card4">
+                        <div class="front">
+                            <img src="assets/image4.webp" alt="Ocultando su rostro" height="100%">
+                        </div>
+                        <div class="back"></div>
+                    </div>
+                    <div class="card" id="card5">
+                        <div class="front">
+                            <img src="assets/image5.webp" alt="Su cintura" height="100%">
+                        </div>
+                        <div class="back"></div>
+                    </div>
+                </div>
     </div>
 
     <div class="heart-rain"></div>
